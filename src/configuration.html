@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Configuración</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      defer
+      href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css"
+    />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <p class="title is-3 is-spaced">Carpetas de entrega</p>
+        <div class="columns is-mobile">
+          <div class="column is-11 is-offset-1">
+            <div class="field">
+              <label class="label">Path de directorio de entrega</label>
+              <div class="control">
+                <input
+                  id="deliveryPath"
+                  class="input"
+                  type="text"
+                  placeholder="Path de compilados"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label"
+                >Path de directorio de entregas del SAO</label
+              >
+              <div class="control">
+                <input
+                  id="saoDeliveryPath"
+                  class="input"
+                  type="text"
+                  placeholder="Path de SAO"
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Carpeta de código fuente de proyectos</label>
+              <div class="control">
+                <input
+                  id="sourceCodePath"
+                  class="input"
+                  type="text"
+                  placeholder="Path de código fuente"
+                />
+              </div>
+            </div>
+            <div class="button-group">
+              <div class="field is-grouped is-grouped-centered">
+                <p class="control">
+                  <button id="cancelBtn" class="button is-light">
+                    Cancelar
+                  </button>
+                </p>
+                <p class="control">
+                  <button id="saveConfigurationBtn" class="button is-info">
+                    Guardar
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const ipc = require("electron").ipcRenderer;
+      const querystring = require("querystring");
+      let query = querystring.parse(global.location.search);
+      let configFile = JSON.parse(query["?configFile"]);
+
+      document.getElementById("deliveryPath").value = configFile.deliveryPath;
+      document.getElementById("saoDeliveryPath").value =
+        configFile.saoDeliveryPath;
+      document.getElementById("sourceCodePath").value =
+        configFile.sourceCodePath;
+
+      const cancelBtn = document.getElementById("cancelBtn");
+      const saveConfigurationBtn = document.getElementById(
+        "saveConfigurationBtn"
+      );
+
+      cancelBtn.addEventListener("click", (e) => {
+        ipc.send("closeConfigWindow");
+      });
+
+      saveConfigurationBtn.addEventListener("click", (e) => {
+        const deliveryPath = document.getElementById("deliveryPath").value;
+        const saoDeliveryPath = document.getElementById("saoDeliveryPath")
+          .value;
+        const sourceCodePath = document.getElementById("sourceCodePath").value;
+
+        const configOptions = {
+          deliveryPath: deliveryPath,
+          saoDeliveryPath: saoDeliveryPath,
+          sourceCodePath: sourceCodePath,
+        };
+
+        ipc.send("saveConfigOptions", configOptions);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  margin: auto;
+  max-width: 38rem;
+  padding: 2rem;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.button-group {
+  margin-top: 1em;
+}
+
+.progress-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 175px;
+}
+
+.section-override {
+  padding: 1.5rem 0.75rem !important;
+}

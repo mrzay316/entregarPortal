@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Entrega portal</title>
+    <link rel="stylesheet" href="index.css" />
+    <link
+      rel="stylesheet"
+      defer
+      href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css"
+    />
+    <script
+      defer
+      src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
+    ></script>
+  </head>
+  <body>
+    <section class="hero is-info">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            Entregar ePortal
+          </h1>
+        </div>
+      </div>
+    </section>
+    <section class="section section-override">
+      <div class="container">
+        <h2 class="subtitle has-text-centered">
+          Realizar copiado de archivos para la entrega de objetos del SAO
+        </h2>
+        <div class="columns is-mobile">
+          <div class="column is-three-fifths is-offset-one-fifth">
+            <div class="field">
+              <label class="label">SAO</label>
+              <div class="control">
+                <input
+                  id="saoNumber"
+                  class="input"
+                  type="text"
+                  placeholder="SAO"
+                />
+              </div>
+            </div>
+            <label class="checkbox">
+              <input id="processPortal" type="checkbox" />
+              ePortal client
+            </label>
+            <label class="checkbox">
+              <input id="processBroadband" type="checkbox" />
+              Broadband
+            </label>
+            <div class="button-group">
+              <div class="field is-grouped is-grouped-centered">
+                <p class="control">
+                  <button id="deliverBtn" class="button is-info">
+                    Entregar
+                  </button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h4 class="subtitle is-4">Progreso</h4>
+          <ul id="progressList" class="progress-container">
+            <!-- <li>
+              <span class="icon">
+                <i
+                  class="fas fa-check has-text-primary has-text-weight-light"
+                ></i>
+              </span>
+              <span class="has-text-weight-light">Texto</span>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </section>
+    <script>
+      const ipc = require("electron").ipcRenderer;
+
+      const deliverBtn = document.getElementById("deliverBtn");
+
+      deliverBtn.addEventListener("click", (e) => {
+        const saoNumber = document.getElementById("saoNumber").value;
+        const processPortal = document.getElementById("processPortal").checked;
+        const processBroadband = document.getElementById("processBroadband")
+          .checked;
+
+        const deliverOptions = {
+          saoNumber: saoNumber,
+          processPortal: processPortal,
+          processBroadband: processBroadband,
+        };
+
+        ipc.send("startDeliverPreparation", deliverOptions);
+      });
+      ipc.on("processStarted", (e, configOptions) => {
+        const deliverBtn = document.getElementById("deliverBtn");
+        // deliverBtn.setAttribute("disabled", "disabled");
+      });
+      ipc.on("updateProgress", (e, message) => {
+        const progressList = document.getElementById("progressList");
+        const listElement = document.createElement("li");
+        messageString = String.fromCharCode.apply(
+          null,
+          new Uint8Array(message)
+        );
+        listElement.innerHTML =
+          `<p>
+          <span class="icon">
+                <i
+                  class="fas fa-angle-double-right has-text-primary has-text-weight-light"
+                ></i>
+              </span>
+          <span class="has-text-weight-light">` +
+          messageString +
+          `</span> </p>`;
+        progressList.append(listElement);
+      });
+    </script>
+  </body>
+</html>
