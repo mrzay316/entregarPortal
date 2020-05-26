@@ -2,8 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
     <title>Entrega portal</title>
-    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="../css/index.css" />
     <link
       rel="stylesheet"
       defer
@@ -13,7 +17,9 @@
       defer
       src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"
     ></script>
+    <script defer src="mainRenderer.js"></script>
   </head>
+
   <body>
     <section class="hero is-info">
       <div class="hero-body">
@@ -27,7 +33,8 @@
     <section class="section section-override">
       <div class="container">
         <h2 class="subtitle has-text-centered">
-          Realizar copiado de archivos para la entrega de objetos del SAO
+          Realizar copiado de archivos para la entrega de objetos del
+          SAO
         </h2>
         <div class="columns is-mobile">
           <div class="column is-three-fifths is-offset-one-fifth">
@@ -61,8 +68,30 @@
             </div>
           </div>
         </div>
-        <div>
-          <h4 class="subtitle is-4">Progreso</h4>
+        <div class="container">
+          <div>
+            <span class="is-size-4">Progreso</span>
+            <span
+              id="iconSuccess"
+              class="icon hide-element has-text-success has-text-weight-light"
+            >
+              <i class="fas fa-check"></i>
+            </span>
+
+            <span
+              id="iconFail"
+              class="icon hide-element has-text-danger has-text-weight-light"
+            >
+              <i class="fas fa-times"></i>
+            </span>
+            <progress
+              id="progressBar"
+              class="progress is-small is-info hide-element"
+              max="100"
+              >15%</progress
+            >
+          </div>
+
           <ul id="progressList" class="progress-container">
             <!-- <li>
               <span class="icon">
@@ -76,48 +105,5 @@
         </div>
       </div>
     </section>
-    <script>
-      const ipc = require("electron").ipcRenderer;
-
-      const deliverBtn = document.getElementById("deliverBtn");
-
-      deliverBtn.addEventListener("click", (e) => {
-        const saoNumber = document.getElementById("saoNumber").value;
-        const processPortal = document.getElementById("processPortal").checked;
-        const processBroadband = document.getElementById("processBroadband")
-          .checked;
-
-        const deliverOptions = {
-          saoNumber: saoNumber,
-          processPortal: processPortal,
-          processBroadband: processBroadband,
-        };
-
-        ipc.send("startDeliverPreparation", deliverOptions);
-      });
-      ipc.on("processStarted", (e, configOptions) => {
-        const deliverBtn = document.getElementById("deliverBtn");
-        // deliverBtn.setAttribute("disabled", "disabled");
-      });
-      ipc.on("updateProgress", (e, message) => {
-        const progressList = document.getElementById("progressList");
-        const listElement = document.createElement("li");
-        messageString = String.fromCharCode.apply(
-          null,
-          new Uint8Array(message)
-        );
-        listElement.innerHTML =
-          `<p>
-          <span class="icon">
-                <i
-                  class="fas fa-angle-double-right has-text-primary has-text-weight-light"
-                ></i>
-              </span>
-          <span class="has-text-weight-light">` +
-          messageString +
-          `</span> </p>`;
-        progressList.append(listElement);
-      });
-    </script>
   </body>
 </html>

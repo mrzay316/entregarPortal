@@ -49,40 +49,32 @@ processBroadband () {
 
 initVariables $@
 
-echo $saoNumber
-echo $processPortal
-echo $processBroadband
-echo $path
-echo $deliveryPath
-echo $sourcePortalPath
-echo $sourceBroadbandPath
-
 #Unzip de artefactos descargados del sao
-# echo "Descomprimiendo artefactos descargados del SAO"
-# cd $deliveryPath
-# unzip -q \*.zip
-# rm *.zip
+echo "Descomprimiendo artefactos descargados del SAO"
+cd $deliveryPath
+unzip -q \*.zip
+rm *.zip
 
 # Unzip de artefactos compilados para la entrega
-# cd $path
-# echo "Descomprimiendo artefactos de la entrega"
-# unzip -q \*.zip
-# rm *.zip
+cd $path
+echo "Descomprimiendo artefactos de la entrega"
+unzip -q \*.zip
+rm *.zip
 
-# if [[ $processPortal == 1 ]]; then
-# 	processPortal
-# fi
+if [[ $processPortal == 1 ]]; then
+	processPortal
+fi
 
-# if [[ $processBroadband == 1 ]]; then
-# 	processBroadband
-# fi
+if [[ $processBroadband == 1 ]]; then
+	processBroadband
+fi
 
 # #crear zips de entrega
-# echo "Crear zips de entrega"
-# cd $deliveryPath
-# zip -r -q front-portal.zip webapps 
-# zip -r -q source-front-portal.zip source-front-portal 
-# #borrar carpetas 
-# rm -rf source-front-portal webapps
+echo "Crear zips de entrega"
+cd $deliveryPath
+zip -r -q front-portal.zip webapps 
+zip -r -q source-front-portal.zip source-front-portal 
+#borrar carpetas 
+rm -rf source-front-portal webapps
 
 

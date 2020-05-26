@@ -3,7 +3,7 @@
   "productName": "entregaportal",
   "version": "1.0.0",
   "description": "preparar archivos para la entrega de objetos del portal",
-  "main": "src/index.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
@@ -53,6 +53,7 @@
     "@electron-forge/maker-rpm": "6.0.0-beta.51",
     "@electron-forge/maker-squirrel": "6.0.0-beta.51",
     "@electron-forge/maker-zip": "6.0.0-beta.51",
-    "electron": "9.0.0"
+    "electron": "9.0.0",
+    "prettier": "2.0.5"
   }
 }

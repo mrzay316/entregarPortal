@@ -6,6 +6,6 @@ cd sss
 echo "Me ejecute 5!"
 echo "Me ejecute 6!"
 echo "Me ejecute 7!"
+sleep 5
 echo "Me ejecute 8!"
-echo "Me ejecute 9!"
-echo "Me ejecute 10!"
+exit 0
