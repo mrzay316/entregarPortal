@@ -162,8 +162,8 @@ ipc.on('startDeliverPreparation', (e, deliverOptions) => {
   // Preparar argumentos del shell
   const arguments = [
     isMac
-      ? './src/scripts/entregarPortal_v3mac.sh'
-      : './src/scripts/entregarPortal_v3win.sh',
+      ? __dirname + '/scripts/entregarPortal_v3mac.sh'
+      : __dirname + '/scripts/entregarPortal_v3win.sh',
     deliverOptions.saoNumber,
     deliverOptions.processPortal ? '1' : '0',
     deliverOptions.procesBroadband ? '1' : '0',
@@ -172,8 +172,8 @@ ipc.on('startDeliverPreparation', (e, deliverOptions) => {
     configFile.sourceCodePath,
   ];
 
-  // const test = './src/scripts/test.sh';
-  const ls = spawn('sh', arguments);
+  const test = __dirname + '/scripts/test.sh';
+  const ls = spawn('sh', [test]);
 
   // Script imprimio algo
   ls.stdout.on('data', (data) => {
